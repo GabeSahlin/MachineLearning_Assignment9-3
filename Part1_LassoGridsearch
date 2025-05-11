@@ -1,0 +1,38 @@
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import GridSearchCV ,cross_validate, train_test_split
+
+# Load in cleaned and normalized data
+df = pd.read_csv("Soccer_Cleaned.csv")
+
+# Store all the features
+X = df.iloc[:, 2:].to_numpy()
+# Store the labels
+y = df.iloc[:, 1].to_numpy()
+
+# Test size
+test_size = 0.3
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
+
+#lasso with alpha 0.05
+reg = Lasso(alpha=0.05)
+cv_results = cross_validate(reg, X_train, y_train, cv = 5, scoring = "r2")
+print(cv_results['test_score'])
+reg.fit(X_train,y_train)
+print(reg.coef_)
+print(reg.score(X_test, y_test)) #R score
+
+#gridsearch with alpha .001 <-> 0.01
+reg = Lasso()
+parameters = {"alpha": np.linspace(0.001, 0.01, num=10)}
+grid_search = GridSearchCV(reg, param_grid=parameters, cv=5, scoring="r2")
+grid_search.fit(X_train, y_train)
+score_df = pd.DataFrame(grid_search.cv_results_)
+print(score_df[['param_alpha', 'mean_test_score', 'rank_test_score']])
+
+#lasso with optimal parameter
+reg = Lasso(alpha=0.001)
+reg.fit(X_train,y_train)
+print(reg.score(X_test, y_test)) #R score
