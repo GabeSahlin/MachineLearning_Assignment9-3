@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+# Data retrieved from Kaggle at https://www.kaggle.com/datasets/hubertsidorowicz/football-players-stats-2024-2025?select=players_data-2024_2025.csv
+df = pd.read_csv("players_data-2024_2025.csv")
+
+# Drop all string columns
+columns_to_drop = []
+for col in df.columns:
+    if df[col].dtype == 'object':
+        columns_to_drop.append(col)
+df = df.drop(columns=columns_to_drop, axis=1)
+
+# Convert all int col to float
+df[df.select_dtypes('int64').columns] = df.select_dtypes('int64').astype('float64')
+
+# Drop columns where all values (excluding the header) are NaN or empty
+df = df.dropna(axis=1)
+cleaned = df.copy()
+
+#Normalize Dataset
+cleaned.iloc[:, :] -= np.average(cleaned.iloc[:, :], axis=0)
+cleaned.iloc[:, :] /= np.std(cleaned.iloc[:, :], axis=0)
+
+print(cleaned.info())
+cleaned.to_csv("Soccer_Cleaned.csv")
