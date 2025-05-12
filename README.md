@@ -7,9 +7,7 @@ Dataset used :
 "players_data-2024_2025.csv"
 https://www.kaggle.com/datasets/hubertsidorowicz/football-players-stats-2024-2025?select=players_data-2024_2025.csv 
 
-Dataset begins with 267 features. After cleaning, the dataset contains 140 features
-
-After performing grid search and using Lasso with an optimal parameter, the score of the test set ended up at 0.9999990321195683.
+Dataset begins with 267 features that covers soccer player's statistics (minutes per game, assists per game, goals, etc). After cleaning, the dataset contains 140 features of quantative data. After performing grid search and using Lasso with an optimal parameter, the score of the test set ended up at 0.9999990321195683.
 
 2. Find a classification problem where there only two categories for the label and at least two quantitative features which will be used to predict the label. After a train/test split use a grid search to identify the optimal regularization parameter C for a linear support vector classifier. Create a confusion matrix for the test dataset with the optimal parameter.
 
